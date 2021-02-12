@@ -1,5 +1,5 @@
 #include "Graph.h"
-
+#include "Graph.cpp"
 #include <iostream>
 #include <string> 
 #include <vector>
@@ -108,8 +108,9 @@ int main()
 		printGraph(newGraph);
 		cout << "\nCopying graph 1 into new graph "
 			<< "using overloaded assignment operator...\n";
-		newGraph = move(graph1);
+		newGraph = graph1;
 		cout << "\nEmptying graph 1...";
+		graph1.clearGraph();
 		cout << "\nCheck graph 1 (should be empty)...\n";
 		cout << "Graph 1 - ";
 		printGraph(graph1);

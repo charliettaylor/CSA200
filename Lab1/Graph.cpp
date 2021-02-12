@@ -4,7 +4,7 @@
     February 10, 2021
 
     CS A200
-    Lab 1
+    Lab 1: Graphs
 */
 
 #include "Graph.h"
@@ -14,15 +14,22 @@ using namespace std;
 // Definition function operator<<
 ostream& operator<<(ostream& out, Graph& print)
 {
-    out << "COURSES:";
     map<int, set<int>>::iterator it;
     for(it = print.graph->begin(); it != print.graph->end(); ++it)
     {
-        out << COURSE_PREFIX << it->first << "\n";
-        for(const auto& prereq : it->second)
+        out << COURSE_PREFIX << it->first << ": ";
+        if(it->second.empty())
         {
-            out << prereq << "\n";
+            out << "No prerequisites.";
         }
+        else
+        {
+            for(const auto& prereq : it->second)
+            {
+                out << COURSE_PREFIX << prereq << " ";
+            }
+        }
+        out << "\n";
     }
     return out;
 }
@@ -38,17 +45,17 @@ Graph::Graph()
 // Add "noexcept" at the end of the header.
 Graph::Graph(const Graph& other) noexcept
 {
-    clearGraph();
-    delete graph;
-    graph = new map<int, set<int>>(*(other.graph));
+    graph = new map<int, set<int>>;
     numOfCourses = other.numOfCourses;
-    //map<int, set<int>>::iterator it = other.graph->begin();
-    //map<int, set<int>>::iterator end = other.graph->end();
-
-    //for(; it != end; ++it)
-    //{
-    //    graph->insert(*it);
-    //}
+    if(numOfCourses > 0)
+    {
+        map<int, set<int>>::const_iterator it = other.graph->cbegin();
+        map<int, set<int>>::const_iterator end = other.graph->cend();
+        for(; it != end; ++it)
+        {
+            graph->insert(*it);
+        }
+    }
 }
 
 // Definition function operator=
@@ -57,7 +64,7 @@ Graph& Graph::operator=(const Graph& rhd) noexcept
 {
     if(this == &rhd)
     {
-        return *this;
+        cerr << "Attempted self-assignment\n";
     }
     else
     {
@@ -69,42 +76,54 @@ Graph& Graph::operator=(const Graph& rhd) noexcept
         }
         numOfCourses = rhd.numOfCourses;
     }
+    return *this;
 }
 
 // Definition destructor
 Graph::~Graph()
 {
     clearGraph();
+    delete graph;
+    graph = nullptr;
 }
 
 // Definition function createGraph
 void Graph::createGraph(vector<vector<int>> list)
 {
-    for(const auto& subList : list)
+    for(const vector<int>& subList : list)
     {
-        set<int> temp;
-        vector<int>::const_iterator it = subList.cbegin() + 1;
-        for(; it != subList.cend(); ++it)
+        if(subList.size() > 1)
         {
-            temp.insert(*it);
+            set<int> temp;
+            vector<int>::const_iterator it = subList.cbegin() + 1;
+            for(; it != subList.cend(); ++it)
+            {
+                temp.insert(*it);
+            }
+            graph->insert(make_pair(subList[0], temp));
         }
-        graph->insert(make_pair(subList[0], temp));
+        else
+        {
+            set<int> temp;
+            graph->insert(make_pair(subList[0], temp));
+        }
     }
+    numOfCourses = static_cast<int>(list.size());
 }
 
 // Definition function isEmpty
 bool Graph::isEmpty() const
 {
-    return !numOfCourses;
+    return numOfCourses < 1;
 }
 
 // Definition function printAllCourses
 void Graph::printAllCourses() const
 {
-    map<int, set<int>>::const_iterator it = graph->begin();
-    for(; it != graph->end(); ++it)
+    map<int, set<int>>::const_iterator it = graph->cbegin();
+    for(; it != graph->cend(); ++it)
     {
-        cout << it->first << "\n";
+        cout << COURSE_PREFIX << it->first << "\n";
     }
 }
 
@@ -112,10 +131,18 @@ void Graph::printAllCourses() const
 void Graph::printPrerequisites(int course) const
 {
     set<int>::iterator it;
-    cout << COURSE_PREFIX << course;
-    for(it = (*graph)[course].begin(); it != (*graph)[course].end(); ++it)
+    if((*graph)[course].empty())
     {
-        cout << *it << "\n";
+        cout << "No prerequiisites.";
+    }
+    else
+    {
+        set<int>::const_iterator it = (*graph)[course].cbegin();
+        set<int>::const_iterator end = (*graph)[course].cend();
+        for(; it != end; ++it)
+        {
+            cout << *it << " ";
+        }
     }
 }
 
@@ -123,5 +150,5 @@ void Graph::printPrerequisites(int course) const
 void Graph::clearGraph()
 {
     graph->clear();
+    numOfCourses = 0;
 }
-
