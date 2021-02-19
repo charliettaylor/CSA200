@@ -12,19 +12,18 @@
 using namespace std;
 
 // Definition function operator<<
-ostream& operator<<(ostream& out, Graph& print)
+ostream& operator<<(ostream& out, const Graph& otherGraph)
 {
-    map<int, set<int>>::iterator it;
-    for(it = print.graph->begin(); it != print.graph->end(); ++it)
+    for(const auto& course : *otherGraph.graph)
     {
-        out << COURSE_PREFIX << it->first << ": ";
-        if(it->second.empty())
+        out << COURSE_PREFIX << course.first << ": ";
+        if(course.second.empty())
         {
             out << "No prerequisites.";
         }
         else
         {
-            for(const auto& prereq : it->second)
+            for(const auto& prereq : course.second)
             {
                 out << COURSE_PREFIX << prereq << " ";
             }
@@ -43,38 +42,29 @@ Graph::Graph()
 
 // Definition copy constructor
 // Add "noexcept" at the end of the header.
-Graph::Graph(const Graph& other) noexcept
+Graph::Graph(const Graph& otherGraph) noexcept
 {
     graph = new map<int, set<int>>;
-    numOfCourses = other.numOfCourses;
+    numOfCourses = otherGraph.numOfCourses;
     if(numOfCourses > 0)
     {
-        map<int, set<int>>::const_iterator it = other.graph->cbegin();
-        map<int, set<int>>::const_iterator end = other.graph->cend();
-        for(; it != end; ++it)
-        {
-            graph->insert(*it);
-        }
+        *graph = *otherGraph.graph;
     }
 }
 
 // Definition function operator=
 // Add "noexcept" at the end of the header.
-Graph& Graph::operator=(const Graph& rhd) noexcept
+Graph& Graph::operator=(const Graph& otherGraph) noexcept
 {
-    if(this == &rhd)
+    if(this == &otherGraph)
     {
         cerr << "Attempted self-assignment\n";
     }
     else
     {
         clearGraph();
-        map<int, set<int>>::iterator it;
-        for(it = rhd.graph->begin(); it != rhd.graph->end(); ++it)
-        {
-            graph->insert(make_pair(it->first, it->second));
-        }
-        numOfCourses = rhd.numOfCourses;
+        numOfCourses = otherGraph.numOfCourses;
+        *graph = *otherGraph.graph;
     }
     return *this;
 }
@@ -82,33 +72,33 @@ Graph& Graph::operator=(const Graph& rhd) noexcept
 // Definition destructor
 Graph::~Graph()
 {
-    clearGraph();
     delete graph;
     graph = nullptr;
 }
 
 // Definition function createGraph
-void Graph::createGraph(vector<vector<int>> list)
+void Graph::createGraph(const vector<vector<int>>& graphList)
 {
-    for(const vector<int>& subList : list)
+    for(const vector<int>& subList : graphList)
     {
+        set<int> temp = {};
         if(subList.size() > 1)
         {
-            set<int> temp;
             vector<int>::const_iterator it = subList.cbegin() + 1;
-            for(; it != subList.cend(); ++it)
+            vector<int>::const_iterator end = subList.cend();
+            while(it != end)
             {
                 temp.insert(*it);
+                ++it;
             }
             graph->insert(make_pair(subList[0], temp));
         }
         else
         {
-            set<int> temp;
             graph->insert(make_pair(subList[0], temp));
         }
     }
-    numOfCourses = static_cast<int>(list.size());
+    numOfCourses = static_cast<int>(graphList.size());
 }
 
 // Definition function isEmpty
@@ -120,28 +110,24 @@ bool Graph::isEmpty() const
 // Definition function printAllCourses
 void Graph::printAllCourses() const
 {
-    map<int, set<int>>::const_iterator it = graph->cbegin();
-    for(; it != graph->cend(); ++it)
+    for(const auto& course : *graph)
     {
-        cout << COURSE_PREFIX << it->first << "\n";
+        cout << COURSE_PREFIX << course.first << "\n";
     }
 }
 
 // Definition function printPrerequisites
 void Graph::printPrerequisites(int course) const
 {
-    set<int>::iterator it;
     if((*graph)[course].empty())
     {
-        cout << "No prerequiisites.";
+        cout << "No prerequisites.";
     }
     else
     {
-        set<int>::const_iterator it = (*graph)[course].cbegin();
-        set<int>::const_iterator end = (*graph)[course].cend();
-        for(; it != end; ++it)
+        for(const auto& prereq : (*graph)[course])
         {
-            cout << *it << " ";
+            cout << prereq << " ";
         }
     }
 }

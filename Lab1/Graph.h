@@ -14,18 +14,18 @@ const std::string COURSE_PREFIX = "CS A";
 class Graph
 {
 	// Declaration friend function operator<<
-	friend std::ostream& operator<<(std::ostream& out, Graph& graph);
+	friend std::ostream& operator<<(std::ostream& out, const Graph& otherGraph);
 
 public:
 	// Declaration default constructor
 	Graph();
 
 	// Declarations for the Big Three
-	Graph(const Graph& other) noexcept;
-	Graph& operator=(const Graph& graph) noexcept;
+	Graph(const Graph& otherGraph) noexcept;
+	Graph& operator=(const Graph& otherGraph) noexcept;
 	~Graph();
 	// Declaration function createGraph
-	void createGraph(std::vector<std::vector<int>>);
+	void createGraph(const std::vector<std::vector<int>>&);
 
 	// Declaration function isEmpty
 	bool isEmpty() const;
