@@ -1,7 +1,7 @@
 /*
     Taylor, Charlie
 
-    February 10, 2021
+    February 19, 2021
 
     CS A200
     Lab 1: Graphs
@@ -62,7 +62,6 @@ Graph& Graph::operator=(const Graph& otherGraph) noexcept
     }
     else
     {
-        clearGraph();
         numOfCourses = otherGraph.numOfCourses;
         *graph = *otherGraph.graph;
     }
@@ -84,7 +83,7 @@ void Graph::createGraph(const vector<vector<int>>& graphList)
         set<int> temp = {};
         if(subList.size() > 1)
         {
-            vector<int>::const_iterator it = subList.cbegin() + 1;
+            vector<int>::const_iterator it = ++subList.cbegin();
             vector<int>::const_iterator end = subList.cend();
             while(it != end)
             {
