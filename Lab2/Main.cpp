@@ -1,4 +1,6 @@
 #include "BST.h"
+#include "BST.cpp"
+#include "Functions.cpp"
 
 #include <iostream>
 #include <vector>

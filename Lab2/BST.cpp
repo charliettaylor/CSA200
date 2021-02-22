@@ -25,9 +25,9 @@ void BST::recursiveInsert(Node * &ptr, int elemToInsert)
 		cerr << "Element " << elemToInsert 
 			<< " is already in the list. "
 			<< "Duplicates are not allowed." << endl;
-	else if (ptr->data > elemToInsert)
+	else if (ptr->data > elemToInsert) // if curr node is greater than insert value, go left
 		recursiveInsert(ptr->llink, elemToInsert);
-	else
+	else //else, go right
 		recursiveInsert(ptr->rlink, elemToInsert);
 }
 
