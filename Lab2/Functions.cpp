@@ -18,7 +18,9 @@ using namespace std;
 void BST::nonRecursiveInsert(int elemToInsert)
 {
 	Node *ptr = root;
+	Node *trail = root;
 	bool done = false;
+	bool left = true;
 
 	while(!done)
 	{
@@ -26,7 +28,19 @@ void BST::nonRecursiveInsert(int elemToInsert)
 		{	
 			Node* newNode = new Node;
 			newNode->data = elemToInsert;
-			ptr = newNode;
+			
+			if(count == 0)
+			{
+				root = newNode;
+			}
+			else
+			{
+				if(left)
+					trail->llink = newNode;
+				else
+					trail->rlink = newNode;
+			}
+
 			++count;
 			done = true;
 		}
@@ -39,10 +53,14 @@ void BST::nonRecursiveInsert(int elemToInsert)
 		}
 		else if (ptr->data > elemToInsert)
 		{
+			left = true;
+			trail = ptr;
 			ptr = ptr->llink;
 		}
 		else
 		{
+			left = false;
+			trail = ptr;
 			ptr = ptr->rlink;
 		}
 	}
@@ -53,13 +71,35 @@ void BST::nonRecursiveInorder() const
 {
 	Node* ptr = root;
 	stack<Node*> traversed;
-	traversed.push(ptr);
-	set<int> values = {ptr->data};
-	int traversalCount = 0;
 	
-	while(count != traversalCount)
+	while(traversed.empty() != true || ptr != nullptr)
 	{
-		if(ptr->llink != nullptr && values.find(ptr->llink->data) != values.end())
+		while(ptr != nullptr)
+		{
+			traversed.push(ptr);
+			ptr = ptr->llink;
+		}
+
+		ptr = traversed.top();
+		traversed.pop();
+		cout << ptr->data << " ";
+		ptr = ptr->rlink;
+		/* goes
+			  1
+            /   \
+          2      3
+        /  \
+      4     5
+	 /
+	null
+	       
+	  */
+	}
+
+}
+
+
+/* 		if(ptr->llink != nullptr && values.find(ptr->llink->data) != values.end())
 		{
 			ptr = ptr->llink;
 			traversed.push(ptr);
@@ -83,13 +123,9 @@ void BST::nonRecursiveInorder() const
 				traversed.push(ptr);
 				values.insert(ptr->data);
 			}	
-		}
-	}
-	
-	
-	
-	
-	
+		} */
+
+
 	/*
 	while count != traversalcount
 		if ptr->llink != nullptr
@@ -101,4 +137,3 @@ void BST::nonRecursiveInorder() const
 			if ptr->rlink != nullptr
 				ptr = ptr->rlink
 	*/
-}
