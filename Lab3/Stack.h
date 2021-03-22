@@ -2,7 +2,7 @@
     Taylor, Charlie
     Ziller, Joseph
 
-    March ?,2021
+    March 19,2021
 
     CS A200
     Lab 3: Stacks
@@ -18,11 +18,11 @@ class Stack
 {
 public:
     Stack() : stack(new std::list<int>), numOfElements(0) {}
-    Stack(const Stack&);
-    Stack& operator=(const Stack&);
+    Stack(const Stack&) noexcept;
+    Stack& operator=(const Stack&) noexcept;
     void push(int);
     void pop();
-    int top() const;
+    int& top() const;
     int size() const;
     void swap(Stack&);
     bool empty() const;

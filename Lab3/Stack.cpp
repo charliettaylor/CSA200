@@ -2,7 +2,7 @@
     Taylor, Charlie
     Ziller, Joseph
 
-    March ?,2021
+    March 19,2021
 
     CS A200
     Lab 3: Stacks
@@ -12,14 +12,14 @@
 #include "Stack.h"
 using namespace std;
 
-Stack::Stack(const Stack& otherStack)
+Stack::Stack(const Stack& otherStack) noexcept
 {
     stack = new list<int>;
 	*stack = *otherStack.stack;
 	numOfElements = otherStack.numOfElements;
 }
 
-Stack& Stack::operator=(const Stack& otherStack)
+Stack& Stack::operator=(const Stack& otherStack) noexcept
 {
     if (this == &otherStack)
     {
@@ -41,13 +41,27 @@ void Stack::push(int elemToInsert)
 
 void Stack::pop()
 {
-	stack->pop_front();
-	--numOfElements;
+    if (numOfElements != 0)
+    {
+        stack->pop_front();
+        --numOfElements;
+    }
+    else
+    {
+        cerr << "Stack is empty.";
+    }
 }
 
-int Stack::top() const
+int& Stack::top() const
 {
-    return stack->front();
+    if (numOfElements != 0)
+    {
+        return stack->front();
+    }
+    else
+    {
+        cerr << "Stack is empty.";
+    }
 }
 
 int Stack::size() const
@@ -74,7 +88,7 @@ void Stack::emplace(int elemToInsert)
     ++numOfElements;
 }
 
-Stack::~Stack() 
+Stack::~Stack()
 {
 	delete stack;
 	stack = nullptr;
