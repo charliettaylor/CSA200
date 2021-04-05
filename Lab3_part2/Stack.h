@@ -2,10 +2,10 @@
     Taylor, Charlie
     Ziller, Joseph
 
-    March 19,2021
+    April 5,2021
 
     CS A200
-    Lab 3: Stacks
+    Lab 3: Stacks Part 2
 */
 
 #ifndef STACK_H
@@ -24,13 +24,12 @@ public:
     Stack(Stack<T>&&) noexcept;
     Stack<T>& operator=(const Stack<T>&) noexcept;
     Stack<T>& operator=(Stack<T>&& otherStack) noexcept;
-    void push(T);
+    void push(const T&);
     void pop();
     T& top() const;
     size_t size() const;
     void swap(Stack<T>&);
     bool empty() const;
-    void emplace(T&);
 
     ~Stack<T>();
 private:

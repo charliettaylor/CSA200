@@ -2,10 +2,10 @@
     Taylor, Charlie
     Ziller, Joseph
 
-    March 19,2021
+    April 5,2021
 
     CS A200
-    Lab 4: Stacks Part 2
+    Lab 3: Stacks Part 2
 */
 
 #include "Stack.h"
@@ -14,7 +14,7 @@ using namespace std;
 template <typename T>
 Stack<T>::Stack(const Stack<T>& otherStack) noexcept
 {
-    stack = new list<int>;
+    stack = new list<T>;
 	*stack = *otherStack.stack;
 }
 
@@ -56,7 +56,7 @@ Stack<T>& Stack<T>::operator=(Stack<T>&& otherStack) noexcept
 }
 
 template <typename T>
-void Stack<T>::push(T elemToInsert)
+void Stack<T>::push(const T& elemToInsert)
 {
     stack->push_front(elemToInsert);
 }
@@ -89,12 +89,6 @@ template <typename T>
 bool Stack<T>::empty() const
 {
 	return stack->empty();
-}
-
-template <typename T>
-void Stack<T>::emplace(T& elemToInsert)
-{
-    stack->push_front(elemToInsert);
 }
 
 template <typename T>

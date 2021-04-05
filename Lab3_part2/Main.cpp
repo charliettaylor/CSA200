@@ -1,30 +1,41 @@
+/*
+    Taylor, Charlie
+    Ziller, Joseph
+
+    April 5,2021
+
+    CS A200
+    Lab 3: Stacks Part 2
+*/
+
 #include "Stack.h"
 #include "Stack.cpp"
 #include "Student.h"
+#include "Student.cpp"
 
 using namespace std;
 
 int main()
 {
     //Test #1
-    Stack<int> yeet;
+    Stack<int> test1;
 
-	yeet.push(1);
-	cout << yeet.top() << "\n";
-	yeet.pop();
-    cout << yeet.empty()  << "\n";
+	test1.push(1);
+	cout << test1.top() << "\n";
+	test1.pop();
+    cout << test1.empty()  << "\n";
 
 	Stack<int> yeehaw;
 	yeehaw.push(3);
 	yeehaw.push(4);
 
-    yeet.swap(yeehaw);
+    test1.swap(yeehaw);
 
     cout << "Original stack is now:\n";
-    while(!yeet.empty())
+    while(!test1.empty())
     {
-        cout << yeet.top() << "\n";
-        yeet.pop();
+        cout << test1.top() << "\n";
+        test1.pop();
     }
 
 
@@ -107,9 +118,77 @@ int main()
 	// stack1.pop();
 	// stack2.pop();
 
+    //Test 7
+    // set up first stack
+    Student John;
+    Student Sally(10, 'A');
+    Student Greg;
     Stack<Student> test7;
-    test7.push(new Student());
+    test7.push(John);
+    test7.push(Sally);
+    test7.push(Greg);
 
+    test7.pop();
+    cout << "test7 size is " <<test7.size() << "\n";
+    test7.empty();
+
+    cout << test7.top() << "\n";
+    // set up swapping stack 
+    Stack<Student> test7swap;
+    Student James(20, 'B');
+    Student Sam(10, 'A');
+    Student Charlie(30, 'C');
+    test7.push(James);
+    test7.push(Sam);
+    test7.push(Charlie);
+
+	test7.swap(test7swap);
+    //set up copy constructor and assignment swap stack
+    Stack<Student> ploy(test7swap);
+
+    cout << "ploy contains after test7swap\n";
+    cout << "ploy is of size " << ploy.size()  << "\n";
+	while(!ploy.empty())
+    {
+		cout << ploy.top() << "\n";
+		ploy.pop();
+	}
+
+	ploy = test7;
+
+    cout << "ploy contains after test7 assignment\n";
+    cout << "ploy is of size " << ploy.size()  << "\n";
+    while(!ploy.empty())
+    {
+		cout << ploy.top() << "\n";
+		ploy.pop();
+	}
+
+	ploy = move(test7swap);
+
+    cout << "ploy's contents after using"
+         << "the move constructor with test7swap\n";
+    cout << "ploy is of size " << ploy.size() << "\n";
+
+    while(!ploy.empty())
+    {
+		cout << ploy.top() << "\n";
+		ploy.pop();
+	}
+
+	Stack<Student> moveConstructor7 = move(ploy);
+
+    cout << "moveConstructor7's contents after using"
+            << " the move constructor with test7swap\n";
+    cout << "moveConstructor7 is of size " 
+        << moveConstructor7.size() << "\n";
+    
+    
+    while(!moveConstructor7.empty())
+    {
+		cout << moveConstructor7.top() << "\n";
+		moveConstructor7.pop();
+	}
 
 	return 0;
 }
