@@ -154,6 +154,7 @@ int main()
 		ploy.pop();
 	}
 
+    //try out assignment operator
 	ploy = test7;
 
     cout << "ploy contains after test7 assignment\n";
@@ -164,11 +165,12 @@ int main()
 		ploy.pop();
 	}
 
+    //try ouy move assignment
 	ploy = move(test7swap);
 
     cout << "ploy's contents after using"
-         << "the move constructor with test7swap\n";
-    cout << "ploy is of size " << ploy.size() << "\n";
+         << "the move constructor with test7swap\n"
+         << "ploy is of size " << ploy.size() << "\n";
 
     while(!ploy.empty())
     {
@@ -176,6 +178,7 @@ int main()
 		ploy.pop();
 	}
 
+    //test move constructor
 	Stack<Student> moveConstructor7 = move(ploy);
 
     cout << "moveConstructor7's contents after using"
