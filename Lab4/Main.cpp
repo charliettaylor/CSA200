@@ -1,3 +1,13 @@
+/*
+    Taylor, Charlie
+    Ziller, Joseph
+    
+    4/11/2021
+
+    CS A200
+    Project 4 Hash Tables
+*/
+
 #include <iostream>
 #include <vector>
 
@@ -17,34 +27,48 @@ void printTable(const int array[], int capacity);
 
 int main()
 {
-    int test[] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+    int test[CAPACITY] = {
+        -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
+        -1,-1,-1,-1,-1,-1,-1,-1,-1,-1
+    };
 
-    // insertKey(test, 10, 7); // Idx 4
-    // insertKey(test, 10, 12);// Idx 9
-    // insertKey(test, 10, 3); // Idx 2
-    // insertKey(test, 10, 4); // Idx 5
-    // insertKey(test, 10, 5); // Idx 8
-    // insertKey(test, 10, 10); // Idx 3
-    // insertKey(test, 10, 6); // Idx 1
-    // insertKey(test, 10, 9); // Idx 0
-    // insertKey(test, 10, 8); // Idx 7
-    // insertKey(test, 10, 14); // Idx 6
+    vector<int> insertKeys = {7, 12, 3, 4, 5, 10, 6, 9, 8, 14};
+    
+    for(const auto i : insertKeys)
+    {
+        insertKey(test, CAPACITY, i);
+    }
 
-    insertKey(test, 10, 9);
-    insertKey(test, 10, 29);
-    insertKey(test, 10, 19);
-    insertKey(test, 10, 39);
-    insertKey(test, 10, 49);
+    // insertKey(test, CAPACITY, 7); // Idx 4
+    // insertKey(test, CAPACITY, 12);// Idx 9
+    // insertKey(test, CAPACITY, 3); // Idx 2
+    // insertKey(test, CAPACITY, 4); // Idx 5
+    // insertKey(test, CAPACITY, 5); // Idx 8
+    // insertKey(test, CAPACITY, 10); // Idx 3
+    // insertKey(test, CAPACITY, 6); // Idx 1
+    // insertKey(test, CAPACITY, 9); // Idx 0
+    // insertKey(test, CAPACITY, 8); // Idx 7
+    // insertKey(test, CAPACITY, 14); // Idx 5
 
-	printTable(test, 10);
+    //Initial Tests
+    // insertKey(test, CAPACITY, 9);
+    // insertKey(test, CAPACITY, 29);
+    // insertKey(test, CAPACITY, 19);
+    // insertKey(test, CAPACITY, 39);
+    // insertKey(test, CAPACITY, 49);
 
-    cout << "Search worky?: " << searchKey(test, 10, 19) << "\n";
+	// printTable(test, CAPACITY);
 
-	deleteKey(test, 10, 29);
-    printTable(test, 10);
-	cout << "\n";
-	insertKey(test, 10, 6);
-    printTable(test, 10);
+    // cout << "Search worky?: " << searchKey(test, CAPACITY, 19) << "\n";
+
+	// deleteKey(test, CAPACITY, 29);
+    // printTable(test, CAPACITY);
+	// cout << "\n";
+	// insertKey(test, CAPACITY, 6);
+
+    //Step Size 5 Tests
+    
+    printTable(test, CAPACITY);
 
 	return 0;
 }
@@ -52,6 +76,10 @@ int main()
 int hashValue(int key, int j, int capacity)
 {
     return ((3 * key) + 3 + j) % capacity;
+    //return ((3 * key) + 3 + (j * 5)) % capacity;
+    //return ((3 * key) + 3 + j^2) % capacity;
+    //return ((((3 * key) + 3 + j) % capacity) + j * (11 - (key % 11)))
+            //% capacity;
 }
 
 void insertKey(int array[], int capacity, int key)
@@ -61,13 +89,9 @@ void insertKey(int array[], int capacity, int key)
     int count = 0;
     int idx = hashValue(key, count, capacity);
 
-    while(!done)
+    while(count <= (capacity / 3) && !done)
     {
-        if(count >= (capacity / 3))
-        {
-			done = true;
-		}
-        else if(array[idx] == -2 || array[idx] == -1)
+        if(array[idx] == -2 || array[idx] == -1)
         {
             array[idx] = key;
             done = true;
@@ -108,7 +132,7 @@ bool searchKey(const int array[], int capacity, int key)
         {
             count += 1;
             idx = hashValue(key, count, capacity);
-        } 
+        }
     }
 
     return found;
