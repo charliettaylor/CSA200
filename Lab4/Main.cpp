@@ -39,36 +39,32 @@ int main()
         insertKey(test, CAPACITY, i);
     }
 
-    // insertKey(test, CAPACITY, 7); // Idx 4
-    // insertKey(test, CAPACITY, 12);// Idx 9
-    // insertKey(test, CAPACITY, 3); // Idx 2
-    // insertKey(test, CAPACITY, 4); // Idx 5
-    // insertKey(test, CAPACITY, 5); // Idx 8
-    // insertKey(test, CAPACITY, 10); // Idx 3
-    // insertKey(test, CAPACITY, 6); // Idx 1
-    // insertKey(test, CAPACITY, 9); // Idx 0
-    // insertKey(test, CAPACITY, 8); // Idx 7
-    // insertKey(test, CAPACITY, 14); // Idx 5
+    printTable(test, CAPACITY);
+    cout << "------------------------------\n";
 
-    //Initial Tests
-    // insertKey(test, CAPACITY, 9);
-    // insertKey(test, CAPACITY, 29);
-    // insertKey(test, CAPACITY, 19);
-    // insertKey(test, CAPACITY, 39);
-    // insertKey(test, CAPACITY, 49);
+    cout << "Looking for 19...\n";
+    cout << "Search work? (1/0): "
+         << searchKey(test, CAPACITY, 19) << "\n";
 
-	// printTable(test, CAPACITY);
-
-    // cout << "Search worky?: " << searchKey(test, CAPACITY, 19) << "\n";
-
-	// deleteKey(test, CAPACITY, 29);
-    // printTable(test, CAPACITY);
-	// cout << "\n";
-	// insertKey(test, CAPACITY, 6);
-
-    //Step Size 5 Tests
+    cout << "Looking for 12...\n";
+    cout << "Search work? (1/0): " 
+         << searchKey(test, CAPACITY, 12) << "\n";
     
     printTable(test, CAPACITY);
+    cout << "------------------------------\n";
+
+    cout << "Deleting 14...\n";
+    deleteKey(test, CAPACITY, 14);
+    cout << "Looking for 14...\n";
+    cout << "Search work? (1/0): " 
+         << searchKey(test, CAPACITY, 14) << "\n";
+    printTable(test, CAPACITY);
+    cout << "------------------------------\n";
+    
+    cout << "Deleting 111...\n";
+    deleteKey(test, CAPACITY, 111);
+    printTable(test, CAPACITY);
+    cout << "------------------------------\n";
 
 	return 0;
 }
@@ -77,24 +73,22 @@ int hashValue(int key, int j, int capacity)
 {
     return ((3 * key) + 3 + j) % capacity;
     //return ((3 * key) + 3 + (j * 5)) % capacity;
-    //return ((3 * key) + 3 + j^2) % capacity;
-    //return ((((3 * key) + 3 + j) % capacity) + j * (11 - (key % 11)))
-            //% capacity;
+    //return ((3 * key) + 3 + (j * j)) % capacity;
+    //return ((((3 * key) + 3 + j) % capacity) + j 
+        //* (11 - (key % 11))) % capacity;
 }
 
 void insertKey(int array[], int capacity, int key)
 {
-    bool done = false;
     bool inserted = false;
     int count = 0;
     int idx = hashValue(key, count, capacity);
 
-    while(count <= (capacity / 3) && !done)
+    while(count <= (capacity / 3) && !inserted)
     {
         if(array[idx] == -2 || array[idx] == -1)
         {
             array[idx] = key;
-            done = true;
             inserted = true;
         }
         else
@@ -124,13 +118,13 @@ bool searchKey(const int array[], int capacity, int key)
             done = true;
             found = true;
         }
-        else if(array[idx] == -1)
+        else if(array[idx] == -1 || count <= (capacity / 3))
         {
             done = true;
         }
         else
         {
-            count += 1;
+            ++count;
             idx = hashValue(key, count, capacity);
         }
     }
