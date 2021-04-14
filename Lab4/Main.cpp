@@ -54,16 +54,20 @@ int main()
     cout << "------------------------------\n";
 
     cout << "Deleting 14...\n";
+
     deleteKey(test, CAPACITY, 14);
     cout << "Looking for 14...\n";
     cout << "Search work? (1/0): " 
          << searchKey(test, CAPACITY, 14) << "\n";
+    
     printTable(test, CAPACITY);
     cout << "------------------------------\n";
     
     cout << "Deleting 111...\n";
+
     deleteKey(test, CAPACITY, 111);
     printTable(test, CAPACITY);
+
     cout << "------------------------------\n";
 
 	return 0;
@@ -71,9 +75,16 @@ int main()
 
 int hashValue(int key, int j, int capacity)
 {
+    //linear probing
     return ((3 * key) + 3 + j) % capacity;
+
+    //linear probing step size 5
     //return ((3 * key) + 3 + (j * 5)) % capacity;
+
+    //quadratic
     //return ((3 * key) + 3 + (j * j)) % capacity;
+    
+    //double hashing
     //return ((((3 * key) + 3 + j) % capacity) + j 
         //* (11 - (key % 11))) % capacity;
 }
@@ -118,7 +129,7 @@ bool searchKey(const int array[], int capacity, int key)
             done = true;
             found = true;
         }
-        else if(array[idx] == -1 || count <= (capacity / 3))
+        else if(array[idx] == -1)
         {
             done = true;
         }
