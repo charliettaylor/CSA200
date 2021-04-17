@@ -27,46 +27,46 @@ void printTable(const int array[], int capacity);
 
 int main()
 {
-    int test[CAPACITY] = {
-        -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,
-        -1,-1,-1,-1,-1,-1,-1,-1,-1,-1
-    };
+    int test[CAPACITY] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+    int cap = CAPACITY;
 
     vector<int> insertKeys = {7, 12, 3, 4, 5, 10, 6, 9, 8, 14};
     
     for(const auto i : insertKeys)
     {
-        insertKey(test, CAPACITY, i);
+        insertKey(test, cap, i);
     }
 
-    printTable(test, CAPACITY);
+    printTable(test, cap);
     cout << "------------------------------\n";
 
     cout << "Looking for 19...\n";
     cout << "Search work? (1/0): "
-         << searchKey(test, CAPACITY, 19) << "\n";
+         << searchKey(test, cap, 19) << "\n";
 
     cout << "Looking for 12...\n";
-    cout << "Search work? (1/0): " 
-         << searchKey(test, CAPACITY, 12) << "\n";
+    cout << "Search work? (1/0): "
+         << searchKey(test, cap, 12) << "\n";
     
-    printTable(test, CAPACITY);
+    printTable(test, cap);
     cout << "------------------------------\n";
+
 
     cout << "Deleting 14...\n";
 
-    deleteKey(test, CAPACITY, 14);
+    deleteKey(test, cap, 14);
     cout << "Looking for 14...\n";
-    cout << "Search work? (1/0): " 
-         << searchKey(test, CAPACITY, 14) << "\n";
+    cout << "Search work? (1/0): "
+         << searchKey(test, cap, 14) << "\n";
     
-    printTable(test, CAPACITY);
+    printTable(test, cap);
     cout << "------------------------------\n";
     
     cout << "Deleting 111...\n";
 
-    deleteKey(test, CAPACITY, 111);
-    printTable(test, CAPACITY);
+    deleteKey(test, cap, 111);
+    printTable(test, cap);
 
     cout << "------------------------------\n";
 
@@ -97,7 +97,7 @@ void insertKey(int array[], int capacity, int key)
 
     while(count <= (capacity / 3) && !inserted)
     {
-        if(array[idx] == -2 || array[idx] == -1)
+        if(array[idx] == -2 || array[idx] == 0 || array[idx] == key)
         {
             array[idx] = key;
             inserted = true;
@@ -111,7 +111,8 @@ void insertKey(int array[], int capacity, int key)
 
     if(!inserted)
     {
-        cout << "Could not insert key " << key << ". Need to rehash.\n";
+        cerr << "Could not insert key " << key
+             << ". Need to rehash.\n";
     }
 }
 
@@ -129,7 +130,7 @@ bool searchKey(const int array[], int capacity, int key)
             done = true;
             found = true;
         }
-        else if(array[idx] == -1)
+        else if(array[idx] == 0 || count >= (capacity / 3))
         {
             done = true;
         }
@@ -158,7 +159,7 @@ void deleteKey(int array[], int capacity, int key)
             deleted = true;
             array[idx] = -2;
         }
-        else if(array[idx] == -1)
+        else if(array[idx] == 0)
         {
             done = true;
         }
@@ -174,6 +175,6 @@ void printTable(const int array[], int capacity)
 {
     for(int i = 0; i < capacity; ++i)
     {
-        cout << "IDX " << i << " = " << array[i] << "\n"; 
+        cout << "IDX " << i << " = " << array[i] << "\n";
     }
 }
